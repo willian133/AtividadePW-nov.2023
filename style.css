@@ -1,0 +1,22 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --background: #121212;
+}
+
+body{
+    background-color: var(--background);
+}
+
+header{
+    display: flex;
+    justify-content: center;
+}
+canvas{
+    margin-top: 10vh;
+    border: 1px solid black;
+}
