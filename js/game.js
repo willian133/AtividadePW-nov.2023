@@ -11,7 +11,7 @@ class Game{
         // DEFININDO TAMANHO DA JANELA
         this.WIDTH_WINDOW  = 720;// comprimento da tela
         this.HEIGHT_WINDOW = 480;// altura da tela
-        this.SCALE  = 1;  // escala com relação aos pixels
+        this.SCALE  = 3;  // escala com relação aos pixels
         this.WIDTH = this.WIDTH_WINDOW / this.SCALE;  // comprimento em escala do jogo
         this.HEIGHT = this.HEIGHT_WINDOW / this.SCALE;// largura em escala do jogo;
 
@@ -39,11 +39,17 @@ class Game{
 
     //ATUALIZA O QUE É MOSTRADO NO CANVAS
     render(){
-        let g = this._graphics
+        // RENDERIZA COM ESCALA
         
+        // let g = this._graphics
+        let c = document.createElement("canvas");
+        let g = c.getContext("2d");
+        c.width = this.WIDTH;
+        c.height = this.HEIGHT;
+
         //RESETAR A TELA COM UM FUNDO PRETO
         g.fillStyle = "rgb(0,0,0)";
-        g.fillRect(0, 0, this.WIDTH_WINDOW, this.HEIGHT_WINDOW);
+        g.fillRect(0, 0, this.WIDTH, this.HEIGHT);
         
         //EXEMPLO DE TEXTO A SER PRINTADO
         // g.font = "bold 20px Courier";
@@ -61,6 +67,17 @@ class Game{
                 e.render(g);
             }
         }
+
+        // -----------------------------------------
+        // RENDERIZA SEM SCALA
+
+        //converte o canvas de background em IMG
+        let bg = new Image()
+        bg.onload = ()=>{
+            //dá zoom na imagem do background
+            this._graphics.drawImage(bg, 0, 0, this.WIDTH, this.HEIGHT, 0, 0, this.WIDTH_WINDOW, this.HEIGHT_WINDOW);
+        };
+        bg.src = c.toDataURL();
     }
 
     //roda o loop principal do game
