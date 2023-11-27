@@ -27,12 +27,13 @@ class Entity{
 
 class Player extends Entity{ //não tem interface para adicionar KeyBoardListener...
     //KEYS - armazena as teclas que a classe utilizara
-    static KEYS = {up: 'w', down: 's', left: 'a', right: 'd', nothing: 0};
+    static KEYS = {up: 'w', down: 's', left: 'a', right: 'd', nothing: "nothing", walled: "walled"};
     _keyboard_listeners = {};
     _commands = {};
     _last_directional_pressed = Player.KEYS.nothing;
     _sprite_direction = Player.KEYS.right;
     _current_sprite_position = 0;
+    _delay_update_sprite = window.performance.now();
     _speed = 2; 
 
     constructor(x, y, sprites){
@@ -44,11 +45,22 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
     }
 
     update(){
+        let walled = false;
+
         // Verificação nos direcionais para realizar movimentação com o pressionamento dos direcionais
         if(this._last_directional_pressed != Player.KEYS.nothing){//verifica se já havia algum direcional sendo pressinonado anteriormente (prioridade de movimentação para o que já estava sendo pressonado)
             let command = this._commands[this._last_directional_pressed];
-            this._last_directional_pressed = command.event(command.is_pressed)
-        }else{
+            // console.log(this._last_directional_pressed)
+            if(command.event){
+                let response = command.event(command.is_pressed);
+                if(response != Player.KEYS.walled){
+                    this._last_directional_pressed = response;
+                }else{
+                    walled = true;
+                }
+            }
+        }
+        if(this._last_directional_pressed == Player.KEYS.nothing){
             let directionals = [Player.KEYS.up, Player.KEYS.down, Player.KEYS.left, Player.KEYS.right];
             for(let d in directionals){
                 let i = directionals[d];
@@ -56,13 +68,34 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
                 if(command.event){
                     let dir = command.event(command.is_pressed);
                     if(dir != Player.KEYS.nothing){
-                        this._last_directional_pressed = dir;
+                        if(dir != Player.KEYS.walled){
+                            this._last_directional_pressed = dir;
+                        }else
+                            walled = true;
                         break;
                     }
                 } 
             }
         }
-        
+        //TROCA DE SPRITES
+        if(this._last_directional_pressed != Player.KEYS.nothing && !walled){//há algum direcional sendo apertado && não parede
+            if(this._last_directional_pressed != this._sprite_direction){//trocou de direção
+                this._sprite_direction = this._last_directional_pressed;
+                this._current_sprite_position = 0;
+
+                this._delay_update_sprite = window.performance.now();
+            }
+            if(window.performance.now() - this._delay_update_sprite >= 1000/24){//troca sprite 24 vezes por segundo
+                this._delay_update_sprite = window.performance.now();
+                this._current_sprite_position++;
+                if(this._current_sprite_position >= this._sprites[this._sprite_direction].length){
+                    this._current_sprite_position = 0;
+                }
+            }
+        }else{//quando não há qualquer direcional sendo pressionado - player está parado
+            this._current_sprite_position = 0;
+        }
+
         //Troca de sprites, tanto de direção quanto de sequência(para formação de animação de caminhada)
         let world = Game.game.world;
         Camera.set_x = Camera.border(Math.floor(this.get_x - Game.game.WIDTH/2), 0, world.width*Resources._size - Game.game.WIDTH);
@@ -72,6 +105,7 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
 
     render(graphics){
         let g = graphics;
+        // console.log(this._sprites[this._sprite_direction][this._current_sprite_position]);
         g.drawImage(this._sprites[this._sprite_direction][this._current_sprite_position], this.get_x - Camera.get_x, this.get_y - Camera.get_y)
 
     }
@@ -87,6 +121,7 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
                     this.set_y = this.get_y - this.get_speed;
             }else{
                 this.set_y = 0;
+                return Player.KEYS.walled;
             }
 
             return Player.KEYS.up;
@@ -97,6 +132,8 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
 
             if(this.will_not_collide(this.get_x, this.get_y + this.get_speed)){
                 this.set_y = this.get_y + this.get_speed;
+            }else{
+                return Player.KEYS.walled;
             }
             
             return Player.KEYS.down;
@@ -111,6 +148,7 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
                     this.set_x = this.get_x - this.get_speed;
             }else{
                 this.set_x = 0;
+                return Player.KEYS.walled;
             }
             
             return Player.KEYS.left;
@@ -121,6 +159,8 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
 
             if(this.will_not_collide(this.get_x + this.get_speed, this.get_y)){
                 this.set_x = this.get_x + this.get_speed;
+            }else{                
+                return Player.KEYS.walled;
             }
 
             return Player.KEYS.right;

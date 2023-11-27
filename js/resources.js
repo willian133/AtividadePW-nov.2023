@@ -23,8 +23,8 @@ class Resources{
                 0xFF0000FF: {'className': Player, 'position': {
                     'd':    [[0, 2], [0, 3], [0, 4], [0, 5]],   // direita
                     'a':    [[0, 6], [0, 7], [0, 8], [0, 9]],   // esquerda
-                    'w':    [[0, 2], [0, 3], [0, 4], [0, 5]],   // cima  - os mesmos da direita
-                    's':    [[0, 6], [0, 7], [0, 8], [0, 9]],   // baixo - os mesmos da esquerda
+                    's':    [[0, 2], [0, 3], [0, 4], [0, 5]],   // cima  - os mesmos da direita
+                    'w':    [[0, 6], [0, 7], [0, 8], [0, 9]],   // baixo - os mesmos da esquerda
                 }}
             }
             let asc = Resources._association;
