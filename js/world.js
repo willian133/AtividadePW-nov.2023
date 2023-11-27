@@ -33,10 +33,10 @@ class Camera{
         return current;
     }
 
-    static get get_x() { return _x; }
-    static get get_y() { return _y; }
-    static set set_x(x) { _x = x; }
-    static set set_y(y) { _y = y; }
+    static get get_x() { return this._x; }
+    static get get_y() { return this._y; }
+    static set set_x(x) { this._x = x; }
+    static set set_y(y) { this._y = y; }
 
 }
 

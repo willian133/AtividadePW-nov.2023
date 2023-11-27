@@ -77,7 +77,7 @@ class Game{
     static start(){
         //faz o método loop rodar 30 vezes por segundo
         Game.game.world = new World(Game._path_map);
-        setInterval(() => Game.game.loop(), 1000/30);
+        setInterval(() => Game.game.loop(), 1000/60);
     }
 }
 

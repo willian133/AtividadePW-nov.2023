@@ -21,10 +21,10 @@ class Resources{
                 0xFF000000: {'className': Grass,  'position': [[0, 0]]},
                 //player
                 0xFF0000FF: {'className': Player, 'position': {
-                    'direita':   [[0, 2], [0, 3], [0, 4], [0, 5]],
-                    'esquerda':  [[0, 6], [0, 7], [0, 8], [0, 9]],
-                    'cima':     [[0, 2], [0, 3], [0, 4], [0, 5]], // os mesmos da direita
-                    'baixo':    [[0, 6], [0, 7], [0, 8], [0, 9]], // os mesmos da esquerda
+                    'd':    [[0, 2], [0, 3], [0, 4], [0, 5]],   // direita
+                    'a':    [[0, 6], [0, 7], [0, 8], [0, 9]],   // esquerda
+                    'w':    [[0, 2], [0, 3], [0, 4], [0, 5]],   // cima  - os mesmos da direita
+                    's':    [[0, 6], [0, 7], [0, 8], [0, 9]],   // baixo - os mesmos da esquerda
                 }}
             }
             let asc = Resources._association;

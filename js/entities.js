@@ -26,12 +26,14 @@ class Entity{
 }
 
 class Player extends Entity{ //não tem interface para adicionar KeyBoardListener...
-    //_KEYS - armazena as teclas que a classe utilizara
-    static _KEYS = {up: 'w', down: 's', left: 'a', right: 'd'};
+    //KEYS - armazena as teclas que a classe utilizara
+    static KEYS = {up: 'w', down: 's', left: 'a', right: 'd', nothing: 0};
     _keyboard_listeners = {};
     _commands = {};
-    _last_directional_pressed;
-    _speed = 3;
+    _last_directional_pressed = Player.KEYS.nothing;
+    _sprite_direction = Player.KEYS.right;
+    _current_sprite_position = 0;
+    _speed = 2; 
 
     constructor(x, y, sprites){
         super(x, y, sprites);
@@ -42,34 +44,81 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
     }
 
     update(){
-        let a = '';
-        for(let i in this._commands){
-            let command = this._commands[i];
-            a+=` ${i}: ${command.is_pressed}`
+        // Verificação nos direcionais para realizar movimentação com o pressionamento dos direcionais
+        if(this._last_directional_pressed != Player.KEYS.nothing){//verifica se já havia algum direcional sendo pressinonado anteriormente (prioridade de movimentação para o que já estava sendo pressonado)
+            let command = this._commands[this._last_directional_pressed];
+            this._last_directional_pressed = command.event(command.is_pressed)
+        }else{
+            let directionals = [Player.KEYS.up, Player.KEYS.down, Player.KEYS.left, Player.KEYS.right];
+            for(let d in directionals){
+                let i = directionals[d];
+                let command = this._commands[i];
+                if(command.event){
+                    let dir = command.event(command.is_pressed);
+                    if(dir != Player.KEYS.nothing){
+                        this._last_directional_pressed = dir;
+                        break;
+                    }
+                } 
+            }
         }
-        a+= '\n';
-        console.log(a)
         
     }
 
     render(graphics){
         let g = graphics;
-        // super.render(g);
+        g.drawImage(this._sprites[this._sprite_direction][this._current_sprite_position], this.get_x - Camera.get_x, this.get_y - Camera.get_y)
+
     }
 
     //adiciona eventos para serem ativados de acordo com as entradas do teclado
     _add_commands(){
-        this._commands[Player._KEYS.up].function = (is_pressed) => {
+        //UP
+        this._commands[Player.KEYS.up].event = (is_pressed) => {
+            if(!is_pressed) return Player.KEYS.nothing;
+            let y;
+            if((y = this.get_y - this.get_speed) >= 0){//verifica para ver se o player não está fora da tela
+                if(this.will_not_collide(this.get_x, y))
+                    this.set_y = this.get_y - this.get_speed;
+            }else{
+                this.set_y = 0;
+            }
 
+            return Player.KEYS.up;
         };
-        this._commands[Player._KEYS.down].function = (is_pressed) => {
+        //DOWN
+        this._commands[Player.KEYS.down].event = (is_pressed) => {
+            if(!is_pressed) return Player.KEYS.nothing; 
+
+            if(this.will_not_collide(this.get_x, this.get_y + this.get_speed)){
+                this.set_y = this.get_y + this.get_speed;
+            }
             
+            return Player.KEYS.down;
         };
-        this._commands[Player._KEYS.left].function = (is_pressed) => {
+        //LEFT
+        this._commands[Player.KEYS.left].event = (is_pressed) => {
+            if(!is_pressed) return Player.KEYS.nothing;
             
+            let x;
+            if((x = this.get_x - this.get_speed) >= 0){ //verifica para ver se o player não está fora da tela
+                if(this.will_not_collide(x, this.get_y))
+                    this.set_x = this.get_x - this.get_speed;
+            }else{
+                this.set_x = 0;
+            }
+            
+            return Player.KEYS.left;
         };
-        this._commands[Player._KEYS.right].function = (is_pressed) => {
-            
+        //RIGHT
+        this._commands[Player.KEYS.right].event = (is_pressed) => {
+            if(!is_pressed) return Player.KEYS.nothing;
+
+            if(this.will_not_collide(this.get_x + this.get_speed, this.get_y)){
+                this.set_x = this.get_x + this.get_speed;
+            }
+
+            return Player.KEYS.right;
         };
 
     }
@@ -77,7 +126,7 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
     //adiciona escuta para as teclas que a classe vai reagir
     _add_listeners(){
         //ADICIONA ESCUTAS PARA AS TECLAS DIRECIONAIS PARA CONTROLAR O PLAYER...
-        let keys = Player._KEYS;
+        let keys = Player.KEYS;
         keys = [keys.left, keys.down, keys.right, keys.up];
         // arrows - teclas equivalentes para direcionais (mesma ordem de 'keys')
         let arrows = ['arrowleft', 'arrowdown', 'arrowright', 'arrowup'];
@@ -97,4 +146,11 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
         //FIM DIRECIONAIS...
     }
 
+    //retorna verdadeiro quando não está colidindo com nada. falso quando está colidindo.
+    will_not_collide(x, y){
+        return true;
+    }
+
+    get get_speed(){return this._speed}
+    set set_speed(speed){this._speed = speed}
 }
