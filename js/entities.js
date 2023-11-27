@@ -98,8 +98,8 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
 
         //Troca de sprites, tanto de direção quanto de sequência(para formação de animação de caminhada)
         let world = Game.game.world;
-        Camera.set_x = Camera.border(Math.floor(this.get_x - Game.game.WIDTH/2), 0, world.width*Resources._size - Game.game.WIDTH);
-        Camera.set_y = Camera.border(Math.floor(this.get_y - Game.game.HEIGHT/2), 0, world.height*Resources._size - Game.game.HEIGHT);
+        Camera.set_x = Camera.border(Math.floor(this.get_x - Game.game.WIDTH/2), 0, world.get_width*Resources._size - Game.game.WIDTH);
+        Camera.set_y = Camera.border(Math.floor(this.get_y - Game.game.HEIGHT/2), 0, world._get_height*Resources._size - Game.game.HEIGHT);
 
     }
 

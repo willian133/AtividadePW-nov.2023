@@ -1,14 +1,19 @@
 
 //CLASS WORLD PARA CONVERTER PIXELS DE UMA IMAGEM EM UM MAPA JOGÁVEL
 class World{
-    width;
-    height;
-    tiles = []; //vetor com todos os tiles do game
-    association;
+    _width;
+    _height;
+    _tiles = []; //vetor com todos os tiles do game
+    _association = {};// definira associção cor - {tile, entities}
     constructor(path_of_sheet) {
-        this._load_map();  
-        this.width = 50;
-        this.height = 50;
+        this._load_map(path_of_sheet);  
+
+        
+
+
+    }
+
+    update(){
 
     }
 
@@ -16,11 +21,36 @@ class World{
         let g = graphics;
 
     }
-
-    _load_map(){
-        new Player(0, 0, Resources.get_sprite(0xFF0000FF))
-    }
     
+
+    _load_map(path){
+        let img = new Image();
+        img.onload = ()=>{
+            let cv = document.createElement("canvas");
+            cv.width = img.width;
+            cv.height = img.height;
+            let ctx = cv.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+
+            for(let xx=0; xx<cv.width; xx++){
+                for(let yy=0; yy<cv.height; yy++){
+                    let data = ctx.getImageData(xx, yy, 1 ,1).data
+                    let d = `${data[0]}${data[1]}${data[2]}${data[3]}`/1
+                    console.log(d)
+                    break;
+                }
+                break;
+            }
+
+        };
+        img.src = path;
+        new Player(0, 0, Resources.get_sprite(0xFF0000FF));
+    }
+    get get_width(){this._width}
+    get get_height(){this._height}
+
+    set _set_width(width){this._width = width}
+    set _set_height(height){this._height = height}
 }
 
 class Camera{
@@ -63,3 +93,4 @@ class Wall extends Tile{}
 class Grass extends Tile{
 
 }
+
