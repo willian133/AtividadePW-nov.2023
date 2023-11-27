@@ -6,15 +6,15 @@ class World{
     tiles = []; //vetor com todos os tiles do game
     association;
     constructor(path_of_sheet) {
-        this._load_map();    
+        this._load_map();  
+        this.width = 50;
+        this.height = 50;
+
     }
 
     render(graphics){
         let g = graphics;
-        // g.drawImage(Resources.get_sprite(0xFF000000)[0], 0, 0, 16, 16, 16, 16, 128, 128);
-        // g.drawImage(Resources.get_sprite(0xFF000000)[0], 0, 0, 16, 16, 16, 16, 128, 128);
-        // g.drawImage(Resources.get_sprite(0xFF0000FF).direita[0], 0, 0, 16, 16, 16, 16, 128, 128);
-        // xx_start = 
+
     }
 
     _load_map(){
@@ -27,9 +27,9 @@ class Camera{
     static _x=0;
     static _y=0;
 
-    static bordered(current, min, max){
-        if(current<min) atual = min;
-        if(current>max) atual = max;
+    static border(current, min, max){
+        if(current<min) current = min;
+        if(current>max) current = max;
         return current;
     }
 

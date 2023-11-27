@@ -11,7 +11,7 @@ class Game{
         // DEFININDO TAMANHO DA JANELA
         this.WIDTH_WINDOW  = 720;// comprimento da tela
         this.HEIGHT_WINDOW = 480;// altura da tela
-        this.SCALE  = 3;  // escala com relação aos pixels
+        this.SCALE  = 1;  // escala com relação aos pixels
         this.WIDTH = this.WIDTH_WINDOW / this.SCALE;  // comprimento em escala do jogo
         this.HEIGHT = this.HEIGHT_WINDOW / this.SCALE;// largura em escala do jogo;
 
