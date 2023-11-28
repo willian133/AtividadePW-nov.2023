@@ -17,10 +17,10 @@ class Resources{
         let promise = new Promise((resolve, reject) =>{
 
             Resources._association = {
-                0xFFFFFFFF: {'className': Wall,   'position': [[0, 1]]},
-                0xFF000000: {'className': Grass,  'position': [[0, 0]]},
+                0xFFFFFFFF: {'className': Wall,   'sheets_position': [[0, 1]]},
+                0x000000FF: {'className': Grass,  'sheets_position': [[0, 0]]},
                 //player
-                0xFF0000FF: {'className': Player, 'position': {
+                0xFF0000FF: {'className': Player, 'sheets_position': {
                     'd':    [[0, 2], [0, 3], [0, 4], [0, 5]],   // direita
                     'a':    [[0, 6], [0, 7], [0, 8], [0, 9]],   // esquerda
                     's':    [[0, 2], [0, 3], [0, 4], [0, 5]],   // cima  - os mesmos da direita
@@ -30,20 +30,20 @@ class Resources{
             let asc = Resources._association;
     
             for(let color in asc){
-                let position = asc[color].position;
+                let sheets_position = asc[color].sheets_position;
     
-                if(Array.isArray(position)){
+                if(Array.isArray(sheets_position)){
                     let arr = [];
-                    position.forEach(([x, y]) =>{
+                    sheets_position.forEach(([x, y]) =>{
                         Resources._get_sheets(x, y).then(img => arr.push(img));
                     });
                     Resources._sprites[color] = arr;                
                 }else{
                     let dir = {};
-                    for(let direction in position){
+                    for(let direction in sheets_position){
                         
                         let arr = [];
-                        position[direction].forEach(([x, y]) =>{
+                        sheets_position[direction].forEach(([x, y]) =>{
                             Resources._get_sheets(x, y).then(img => arr.push(img));
                         });
                         dir[direction] = arr;
@@ -85,4 +85,5 @@ class Resources{
     }
 
     static get get_size(){return this._size;}
+    static get get_assossiation(){return Resources._association}
 }

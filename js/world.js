@@ -4,7 +4,6 @@ class World{
     _width;
     _height;
     _tiles = []; //vetor com todos os tiles do game
-    _association = {};// definira associção cor - {tile, entities}
     constructor(path_of_sheet) {
         this._load_map(path_of_sheet);  
 
@@ -35,8 +34,16 @@ class World{
             for(let xx=0; xx<cv.width; xx++){
                 for(let yy=0; yy<cv.height; yy++){
                     let data = ctx.getImageData(xx, yy, 1 ,1).data
-                    let d = `${data[0]}${data[1]}${data[2]}${data[3]}`/1
-                    console.log(d)
+                    let rgba = Number(`0x${Number(data[0]).toString(16)}${Number(data[1]).toString(16)}${Number(data[2]).toString(16)}${Number(data[3]).toString(16)}`);
+                    
+                    let tile_entity = Resources.get_assossiation[rgba]['className'];
+                    if(tile_entity){
+                        if(tile_entity instanceof(Entity)){
+                            // new Player(xx, yy, )
+                            // tile_entity = 
+                        }
+                        // this._tiles.push(tile_entity);
+                    } 
                     break;
                 }
                 break;
@@ -44,8 +51,11 @@ class World{
 
         };
         img.src = path;
-        new Player(0, 0, Resources.get_sprite(0xFF0000FF));
+        new Player(-16, -16, Resources.get_sprite(0xFF0000FF));
     }
+
+    //Retorna {}. dic[cor] = func(x, y) -> returns TileType já instanciado entidades;
+
     get get_width(){this._width}
     get get_height(){this._height}
 
