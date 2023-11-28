@@ -19,6 +19,7 @@ class Game{
         _canvas.width = Game.get_width_window;
         _canvas.height = Game.get_height_window;
         this._graphics = _canvas.getContext("2d");
+        console.log(Game.get_height_window)
 
         //Mapa e entidades
         this.entidades = [];
@@ -49,7 +50,7 @@ class Game{
 
         //RESETAR A TELA COM UM FUNDO PRETO
         g.fillStyle = "rgb(0,0,0)";
-        g.fillRect(0, 0, Game.get_width, Game.get);
+        g.fillRect(0, 0, Game.get_width, Game.get_width);
         
         //EXEMPLO DE TEXTO A SER PRINTADO
         // g.font = "bold 20px Courier";
@@ -99,7 +100,7 @@ class Game{
     }
     static get get_width_window(){return Game._WIDTH_WINDOW}
     static set set_width_window(width){Game._WIDTH_WINDOW = width}
-    static get get_height_window(){return Game._WIDTH_WINDOW}
+    static get get_height_window(){return Game._HEIGHT_WINDOW}
     static set set_height_window(height){Game._HEIGHT_WINDOW = height}
     
     static get get_width(){return Game._WIDTH}
