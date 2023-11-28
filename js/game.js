@@ -19,7 +19,6 @@ class Game{
         _canvas.width = Game.get_width_window;
         _canvas.height = Game.get_height_window;
         this._graphics = _canvas.getContext("2d");
-        console.log(Game.get_height_window)
 
         //Mapa e entidades
         this.entidades = [];

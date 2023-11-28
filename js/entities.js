@@ -34,7 +34,7 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
     _sprite_direction = Player.KEYS.right;
     _current_sprite_position = 0;
     _delay_update_sprite = window.performance.now();
-    _speed = 2; 
+    _speed = 4; 
 
     constructor(x, y, sprites){
         super(x, y, sprites);
@@ -105,9 +105,7 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
 
     render(graphics){
         let g = graphics;
-        // console.log(this._sprites[this._sprite_direction][this._current_sprite_position]);
-        g.drawImage(this._sprites[this._sprite_direction][this._current_sprite_position], this.get_x - Camera.get_x, this.get_y - Camera.get_y)
-
+        g.drawImage(this._sprites[this._sprite_direction][this._current_sprite_position], this.get_x - Camera.get_x, this.get_y - Camera.get_y)        
     }
 
     //adiciona eventos para serem ativados de acordo com as entradas do teclado
