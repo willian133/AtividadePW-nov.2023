@@ -16,10 +16,6 @@ class Game{
         // DEFININDO TAMANHO DA JANELA
         Game.set_height_window = _canvas.height;
         Game.set_width_window = _canvas.width;
-        //ALTERANDO ELEMENTO CANVAS
-        // _canvas.width = Game.get_width_window;
-        // _canvas.height = Game.get_height_window;
-        // this.set_width_window = 1000;
 
         this._graphics = _canvas.getContext("2d");
 
@@ -36,7 +32,6 @@ class Game{
     render(){
         // RENDERIZA COM ESCALA
         
-        // let g = this._graphics
         let c = document.createElement("canvas");
         let g = c.getContext("2d");
         c.width = Game.get_width;
@@ -46,11 +41,6 @@ class Game{
         g.fillStyle = "rgb(0,0,0)";
         g.fillRect(0, 0, Game.get_width, Game.get_width);
         
-        //EXEMPLO DE TEXTO A SER PRINTADO
-        // g.font = "bold 20px Courier";
-        // g.fillStyle = "rgb(255,0,0)";
-        // g.fillText("Press the button", 20, 20);
-
         this.world.render(g)
 
         let ett = Entity.entities;
