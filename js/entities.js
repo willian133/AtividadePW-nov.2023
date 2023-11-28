@@ -191,6 +191,9 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
 
     //retorna verdadeiro quando não está colidindo com nada. falso quando está colidindo.
     will_not_collide(x, y){
+        //verifica se não há tiles não transpansáveis... {Wall}
+        if(!Game.game.world.is_free(x, y)) return false;
+
         return true;
     }
 

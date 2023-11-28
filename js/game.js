@@ -26,15 +26,7 @@ class Game{
 
     //ATUALIZA A LÓGICA DO GAME
     update(){
-        let ett = Entity.entities;
-        for(let i in ett){
-            let e = ett[i];
-            if(e instanceof Player){ // Player
-                e.update();
-            }else{
-                e.update();
-            }
-        }
+        this.world.update();
     }
 
     //ATUALIZA O QUE É MOSTRADO NO CANVAS

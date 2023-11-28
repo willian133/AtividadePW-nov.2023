@@ -3,19 +3,26 @@
 class World{
     _width;
     _height;
-    _tiles = []; //vetor com todos os tiles do game
+    _tiles = []; //vetor com todos os this.get_tiles do game - equivalente a
+    _entities = []; 
     constructor(path_of_sheet) {
         this._load_map(path_of_sheet);  
-
-        
-
-
     }
 
     update(){
-
+        let ett = this._entities;
+        //percorre todas as entidades
+        for(let i in ett){
+            let e = ett[i];
+            if(e instanceof Player){ // Player
+                e.update();
+            }else{
+                e.update();
+            }
+        }
     }
 
+    // Renderiza todos os this.get_tiles do game
     render(graphics){
         let g = graphics;
 
@@ -39,7 +46,7 @@ class World{
 
     }
     
-
+    // método que carrega os this.get_tiles. Cria uma nova instância de Tiles e posiciona elas na posição de acorodo com a posição e cor do mapa base a ser carregado. Resources._association contém o dicionário de conversão
     _load_map(path){
         let img = new Image();
         img.onload = ()=>{
@@ -66,7 +73,7 @@ class World{
                     let tile_entity = rs['className'];
                     if(tile_entity){                    
                         if(Entity.isPrototypeOf(tile_entity)){
-                            new tile_entity(xx*Resources.get_size, yy*Resources.get_size, rs['sprites']);
+                            this._entities.push(new tile_entity(xx*Resources.get_size, yy*Resources.get_size, rs['sprites']));
                             rs = Resources.get_assossiation[0x00000000];//grama por padrão                     
                             tile_entity = rs['className'];
                         }
@@ -77,10 +84,27 @@ class World{
 
         };
         img.src = path;
-        // new Player(-16, -16, Resources.get_sprite(0x0000FFFF));
     }
 
-    //Retorna {}. dic[cor] = func(x, y) -> returns TileType já instanciado entidades;
+    is_free(x, y){
+        let x1 = Math.floor(x / Resources.get_size);
+        let y1 = Math.floor(y / Resources.get_size);
+        if(this.get_tiles[x1+y1*this.get_width] instanceof Wall) return false;
+
+        let x2 = Math.floor((x+Resources.get_size-1) / Resources.get_size);
+        let y2 = Math.floor(y / Resources.get_size);
+        if(this.get_tiles[x2+y2*this.get_width] instanceof Wall) return false;
+
+        let x3 = Math.floor(x / Resources.get_size);
+        let y3 = Math.floor((y+Resources.get_size-1) / Resources.get_size);
+        if(this.get_tiles[x3+y3*this.get_width] instanceof Wall) return false;
+
+        let x4 = Math.floor((x+Resources.get_size-1) / Resources.get_size);
+        let y4 = Math.floor((y+Resources.get_size-1) / Resources.get_size);
+        if(this.get_tiles[x4+y4*this.get_width] instanceof Wall) return false;
+
+        return true;
+    }
 
     get get_width(){return this._width}
     get get_height(){return this._height}
