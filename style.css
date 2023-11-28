@@ -19,4 +19,5 @@ header{
 canvas{
     margin-top: 10vh;
     border: 1px solid black;
+    box-shadow: 0 0 8px 4px rgb(165, 77, 236);
 }

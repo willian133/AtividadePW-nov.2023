@@ -7,17 +7,20 @@ class Game{
     static _path_map = "assets/map.png"; 
     static _WIDTH_WINDOW  = 720;// comprimento da tela
     static _HEIGHT_WINDOW = 480;// altura da tela
-    static _SCALE  = 3;  // escala com relação aos pixels
+    static _SCALE  = 1;  // escala com relação aos pixels
     static _WIDTH = Game.get_width_window / Game._SCALE;  // comprimento em escala do jogo
     static _HEIGHT = Game.get_height_window / Game._SCALE;// largura em escala do jogo;
     world;
 
     constructor(){
         // DEFININDO TAMANHO DA JANELA
-
+        Game.set_height_window = _canvas.height;
+        Game.set_width_window = _canvas.width;
         //ALTERANDO ELEMENTO CANVAS
-        _canvas.width = Game.get_width_window;
-        _canvas.height = Game.get_height_window;
+        // _canvas.width = Game.get_width_window;
+        // _canvas.height = Game.get_height_window;
+        // this.set_width_window = 1000;
+
         this._graphics = _canvas.getContext("2d");
 
         //Mapa e entidades
@@ -90,9 +93,17 @@ class Game{
         setInterval(() => Game.game.loop(), 1000/60);
     }
     static get get_width_window(){return Game._WIDTH_WINDOW}
-    static set set_width_window(width){Game._WIDTH_WINDOW = width}
+    static set set_width_window(width){
+        Game._WIDTH_WINDOW = width
+        _canvas.width = width;
+        this._set_width = Math.floor(width/this.get_scale);
+    }
     static get get_height_window(){return Game._HEIGHT_WINDOW}
-    static set set_height_window(height){Game._HEIGHT_WINDOW = height}
+    static set set_height_window(height){
+        Game._HEIGHT_WINDOW = height
+        _canvas.height = height;
+        this._set_height = Math.floor(height/this.get_scale);
+    }
     
     static get get_width(){return Game._WIDTH}
     static set _set_width(width){Game._WIDTH = width}

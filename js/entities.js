@@ -117,9 +117,10 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
             if((y = this.get_y - this.get_speed) >= 0){//verifica para ver se o player não está fora da tela
                 if(this.will_not_collide(this.get_x, y))
                     this.set_y = this.get_y - this.get_speed;
+                else
+                    return Player.KEYS.walled;
             }else{
                 this.set_y = 0;
-                return Player.KEYS.walled;
             }
 
             return Player.KEYS.up;
@@ -144,9 +145,11 @@ class Player extends Entity{ //não tem interface para adicionar KeyBoardListene
             if((x = this.get_x - this.get_speed) >= 0){ //verifica para ver se o player não está fora da tela
                 if(this.will_not_collide(x, this.get_y))
                     this.set_x = this.get_x - this.get_speed;
+                else
+                    return Player.KEYS.walled;
+
             }else{
                 this.set_x = 0;
-                return Player.KEYS.walled;
             }
             
             return Player.KEYS.left;
